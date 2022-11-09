@@ -1,0 +1,5 @@
+
+<<< Download the Pygame intro ppt
+
+https://www.patternsgameprog.com/discover-python-and-patterns-14-collisions/
+
