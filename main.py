@@ -1,45 +1,44 @@
 import pygame
 from  config import *  #this contains all the global level variables across the files - its imported into all the files
-from classes import Player,Mountain #this imports the two classes from the classes.py
+from classes import * #this imports the two classes from the classes.py
 import databaseActions #all database actions are here
+
+#700, 398
 
 #main Pygame drawing loop function
 def pygame_start():
   pygame.init()
-  mountain = Mountain(0, 50)
-  user = Player(0, 455)   
+  mountain = Mountain(0, 0)
+  user = Player(0, 355)  
   done = False
   while True:
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         pygame.quit()
         sys.exit()
- 
-      if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_RIGHT:  
-            user.dir = "right"
-            user.x = user.x + 10
-            print("Moving Right!")   
-          
-        if event.key == pygame.K_LEFT: 
-            user.x = user.x - 10
-            user.dir = "left"
-            print("Moving Left!")    
-          
+      
     keys_pressed = pygame.key.get_pressed()
+    if keys_pressed[pygame.K_RIGHT]:  
+      user.dir = "right"
+      user.x = user.x + 10
+          
+    if keys_pressed[pygame.K_LEFT]:
+      user.x = user.x - 10
+      user.dir = "left"   
 
     if keys_pressed[pygame.K_SPACE]:
       jumping = True
-
+      
+    jumping = False
     if jumping:
-      y_position -= y_velocity
+      Player.y -= y_velocity
       y_velocity -= y_gravity
-      if y_velocity < -JUMP_HEIGHT:
+      if y_velocity < -jump_height:
         jumping = False
         y_velocity = jump_height
-      screen.blit(jumping_img, (self.x, self.y)) 
-    else:
-      user.drawL() 
+        user.jumping()       
+        
+  
       
     mountain.draw()  
     

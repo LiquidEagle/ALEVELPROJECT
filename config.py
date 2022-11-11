@@ -8,7 +8,7 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 # Set up the drawing window
-screen = pygame.display.set_mode([500, 500])
+screen = pygame.display.set_mode([700, 398])
 #images
 playerImgR = pygame.image.load('playerImgR.png')
 playerImgL = pygame.image.load('playerImgL.png')

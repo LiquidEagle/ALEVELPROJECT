@@ -3,7 +3,7 @@ import sqlite3
 
 con = sqlite3.connect('alldata.db')
 cursor = con.cursor()
-
+access = True
 
 def createDBandTable():
     sql = """

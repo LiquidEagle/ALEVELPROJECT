@@ -3,13 +3,13 @@ import pygame
 from config import *
 
 
-
-
 class Player:
     def __init__(self, x, y):
         self.dir = "right"
         self.x = x
+        X_POSITION = x
         self.y = y
+        Y_POSITION = y
         self.size = playerImgR.get_size()
         # create a 2x bigger image than self.image
         self.smaller_imgR = pygame.transform.scale(
@@ -45,8 +45,7 @@ class Player:
         if self.dir == "left":
             self.x = self.x - speed  # changes the y value to turn left)
 
-    
-      
+
 class Mountain:
     def __init__(self, x, y):
         self.x = x
