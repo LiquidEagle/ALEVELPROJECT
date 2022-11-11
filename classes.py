@@ -7,9 +7,7 @@ class Player:
     def __init__(self, x, y):
         self.dir = "right"
         self.x = x
-        X_POSITION = x
         self.y = y
-        Y_POSITION = y
         self.size = playerImgR.get_size()
         # create a 2x bigger image than self.image
         self.smaller_imgR = pygame.transform.scale(

@@ -15,6 +15,7 @@ playerImgL = pygame.image.load('playerImgL.png')
 jumpingImg = pygame.image.load('jumping.png')
 mountains = pygame.image.load('mountains.jpg')
 
-y_gravity = 1
-jump_height = 20
-y_velocity = jump_height
+ply = 355
+px = 1
+vel_x = 10
+vel_y = 10

@@ -9,7 +9,11 @@ import databaseActions #all database actions are here
 def pygame_start():
   pygame.init()
   mountain = Mountain(0, 0)
-  user = Player(0, 355)  
+  global ply
+  global px
+  global vel_y
+  global vel_x
+  user = Player(px, ply)  
   done = False
   while True:
     for event in pygame.event.get():
@@ -20,23 +24,31 @@ def pygame_start():
     keys_pressed = pygame.key.get_pressed()
     if keys_pressed[pygame.K_RIGHT]:  
       user.dir = "right"
-      user.x = user.x + 10
+      user.x = user.x + vel_x
           
     if keys_pressed[pygame.K_LEFT]:
-      user.x = user.x - 10
-      user.dir = "left"   
+      user.x = user.x - vel_x
+      user.dir = "left"  
 
+    jump = False
+    
     if keys_pressed[pygame.K_SPACE]:
-      jumping = True
-      
-    jumping = False
-    if jumping:
-      Player.y -= y_velocity
-      y_velocity -= y_gravity
-      if y_velocity < -jump_height:
-        jumping = False
-        y_velocity = jump_height
-        user.jumping()       
+      jump = True
+
+    if jump is True:
+      user.y -= vel_y
+      vel_y -=1 
+      if vel_y < -10:
+        jump = False 
+        vel_y = 10  
+
+#    if jumping:
+#      Player.y -= y_velocity
+#      y_velocity -= y_gravity
+#      if y_velocity < -jump_height:
+#        jumping = False
+#        y_velocity = jump_height
+#        user.jumping()       
         
   
       
@@ -68,7 +80,6 @@ elif options == "B":
     print("try again")
   pygame_start()
         
-
 
 
 
