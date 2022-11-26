@@ -13,7 +13,11 @@ def pygame_start():
   global px
   global vel_y
   global vel_x
+  global height
+  global width
   user = Player(px, ply)  
+  width =  user.smaller_imgR.get_width()
+  height = user.smaller_imgR.get_height()
   done = False
   while True:
     for event in pygame.event.get():
@@ -22,11 +26,11 @@ def pygame_start():
         sys.exit()
       
     keys_pressed = pygame.key.get_pressed()
-    if keys_pressed[pygame.K_RIGHT]:  
+    if keys_pressed[pygame.K_RIGHT] and user.x < mountainWidth - width - vel_x:  
       user.dir = "right"
       user.x = user.x + vel_x
           
-    if keys_pressed[pygame.K_LEFT]:
+    if keys_pressed[pygame.K_LEFT] and user.x > vel_x:
       user.x = user.x - vel_x
       user.dir = "left"  
 
