@@ -12,21 +12,34 @@ def pygame_start():
 	pygame.init()
 	mountain = Mountain(0, 0)
 	user = Player(px, ply)  
-	width =  user.smaller_imgR.get_width()
-	height = user.smaller_imgR.get_height()
+	width =  standing.get_width()
+	height = standing.get_height()
 	isJump = False
-	JUMPHEIGHT = 8
+	JUMPHEIGHT = 6
 	jumpCount = JUMPHEIGHT
+	global move_left, move_right, stepIndex
+	
 	done = True
 	while done:    
 		keys_pressed = pygame.key.get_pressed()
 		if keys_pressed[pygame.K_RIGHT] and user.x < mountainWidth - width - vel_x:  
-			user.dir = "right"
-			user.x = user.x + vel_x
+			#user.dir = "right"
+			user.x += vel_x
+			move_left = False
+			move_right = True
 		
-		if keys_pressed[pygame.K_LEFT] and user.x > vel_x:
-			user.x = user.x - vel_x
-			user.dir = "left"  
+		elif keys_pressed[pygame.K_LEFT] and user.x > vel_x:
+			user.x -= vel_x
+			#user.dir = "left" 
+			move_left = True
+			move_right = False 
+		else:
+			move_left = False
+			move_right = False
+			stepIndex = 0
+		
+		
+
 		#start jumping
 		if keys_pressed[pygame.K_SPACE]:
 			isJump = True
@@ -41,22 +54,23 @@ def pygame_start():
 		mountain.draw()  
 
 		#draw player
-		if user.dir=="left":
-			user.drawL()
-		elif user.dir=="right":
-			user.drawR() 
+		user.draw_game()
+		#if user.dir=="left":
+		#	user.drawL()
+		#elif user.dir=="right":
+		#	user.drawR() 
 		
 		#followed this section of the tutorial here
 		#https://www.techwithtim.net/tutorials/game-development-with-python/pygame-tutorial/jumping/
 		# its not very OOP but it works
 		if isJump:
 			if jumpCount >= JUMPHEIGHT * -1:
-				user.y = user.y -(jumpCount * abs(jumpCount)) * 0.5
-				jumpCount = jumpCount - 1
+				user.y -= (jumpCount * abs(jumpCount)) * 0.5
+				jumpCount -= 1
 			else: # This will execute if our jump is finished
 				jumpCount = JUMPHEIGHT
 				isJump = False
-				
+				#resetting the variables
 			 
 		
 		pygame.display.flip()

@@ -7,19 +7,30 @@ class Player:
 		self.dir = "right"
 		self.x = x
 		self.y = y
-		self.size = playerImgR.get_size()
-		# create a 2x bigger image than self.image
-		self.smaller_imgR = pygame.transform.scale(playerImgR, (int(self.size[0] / 20), int(self.size[1] / 20)))
-		self.smaller_imgL = pygame.transform.scale(playerImgL, (int(self.size[0] / 20), int(self.size[1] / 20)))
-		#self.jumping_img = pygame.transform.scale(
-		#jumpingImg, (int(self.size[0] / 20), int(self.size[1] / 20)))
+		#self.size = playerImgR.get_size()
+	def draw_game(self):
+		global stepIndex
+		if stepIndex >=9:
+			stepIndex = 0
+		if move_left:
+			screen.blit(left[stepIndex], (self.x, self.y))	
+			print(left[stepIndex])
+			stepIndex += 1
+		elif move_right:
+			screen.blit(right[stepIndex], (self.x, self.y))
+			stepIndex += 1
+		else:
+			screen.blit(standing, (self.x, self.y))
+
 	def drawR(self):
 		#draw bigger Right image to screen at x=100 y=100 position
-		screen.blit(self.smaller_imgR, (self.x, self.y))
+		#screen.blit(playerImgR, (self.x, self.y))
+		pass
 		
 	def drawL(self):
 		#draw bigger Left image to screen at x=100 y=100 position
-		screen.blit(self.smaller_imgL, (self.x, self.y))
+		#screen.blit(playerImgL, (self.x, self.y))
+		pass
 	
 	#def move(self, speed):  # input the speed
 		
