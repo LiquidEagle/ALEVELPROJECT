@@ -61,7 +61,7 @@ def pygame_start():
 		
 		pygame.display.flip()
 		
-		clock.tick(17)
+		clock.tick(60)
 		screen.fill(BLACK)
 
 
