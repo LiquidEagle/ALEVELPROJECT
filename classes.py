@@ -1,7 +1,7 @@
 #This file contains the TWO classes used in the game
 import pygame
 from config import *
-
+  
 class Player:
 	def __init__(self, x, y):
 		self.dir = "right"
@@ -10,13 +10,14 @@ class Player:
 		#self.size = playerImgR.get_size()
 	def draw_game(self):
 		global stepIndex
+		global move_left, move_right, left, right
 		if stepIndex >=9:
 			stepIndex = 0
-		if move_left:
+		if move_left == True:
 			screen.blit(left[stepIndex], (self.x, self.y))	
 			print(left[stepIndex])
 			stepIndex += 1
-		elif move_right:
+		elif move_right == True:
 			screen.blit(right[stepIndex], (self.x, self.y))
 			stepIndex += 1
 		else:

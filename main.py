@@ -1,4 +1,3 @@
-
 import pygame
 from  config import *  #this contains all the global level variables across the files - its imported into all the files
 from classes import * #this imports the two classes from the classes.py
@@ -22,15 +21,15 @@ def pygame_start():
 	done = True
 	while done:    
 		keys_pressed = pygame.key.get_pressed()
-		if keys_pressed[pygame.K_RIGHT] and user.x < mountainWidth - width - vel_x:  
-			#user.dir = "right"
+		if keys_pressed[pygame.K_RIGHT] and user.x < mountainWidth - width - vel_x:
+      print("hello")
 			user.x += vel_x
 			move_left = False
 			move_right = True
-		
+
+      
 		elif keys_pressed[pygame.K_LEFT] and user.x > vel_x:
 			user.x -= vel_x
-			#user.dir = "left" 
 			move_left = True
 			move_right = False 
 		else:
