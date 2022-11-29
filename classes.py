@@ -7,19 +7,20 @@ class Player:
 		self.dir = "right"
 		self.x = x
 		self.y = y
+		self.move_left = False
+		self.move_right = False
+		self.stepIndex = 0
 		#self.size = playerImgR.get_size()
 	def draw_game(self):
-		global stepIndex
-		global move_left, move_right, left, right
-		if stepIndex >=9:
-			stepIndex = 0
-		if move_left == True:
-			screen.blit(left[stepIndex], (self.x, self.y))	
-			print(left[stepIndex])
-			stepIndex += 1
-		elif move_right == True:
-			screen.blit(right[stepIndex], (self.x, self.y))
-			stepIndex += 1
+		global left, right
+		if self.stepIndex >=9:
+			self.stepIndex = 0
+		if self.move_left:
+			screen.blit(left[self.stepIndex], (self.x, self.y))	
+			self.stepIndex += 1
+		elif self.move_right:
+			screen.blit(right[self.stepIndex], (self.x, self.y))
+			self.stepIndex += 1
 		else:
 			screen.blit(standing, (self.x, self.y))
 

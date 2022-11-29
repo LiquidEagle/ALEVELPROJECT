@@ -22,7 +22,6 @@ for lpic in range(1,10):
     lpic += 1
 
 standing = pygame.image.load('assets/standing.png')
-playerImgL = pygame.image.load('assets/L1.png')
 mountains = pygame.image.load('assets/mountains.jpg')
 
 
@@ -39,7 +38,5 @@ px = 250
 vel_x = 10
 vel_y = 10
 
-move_left = False
-move_right = False
-stepIndex = 0
+
 

@@ -16,37 +16,40 @@ def pygame_start():
 	isJump = False
 	JUMPHEIGHT = 6
 	jumpCount = JUMPHEIGHT
-	global move_left, move_right, stepIndex
 	
 	done = True
-	while done:    
-		keys_pressed = pygame.key.get_pressed()
-		if keys_pressed[pygame.K_RIGHT] and user.x < mountainWidth - width - vel_x:
-      print("hello")
-			user.x += vel_x
-			move_left = False
-			move_right = True
+	while done:
+		
 
-      
-		elif keys_pressed[pygame.K_LEFT] and user.x > vel_x:
+		keys_pressed = pygame.key.get_pressed()
+		
+		if keys_pressed[pygame.K_LEFT] and user.x > vel_x:
 			user.x -= vel_x
-			move_left = True
-			move_right = False 
+			user.move_left = True
+			user.move_right = False 
+		
+		elif keys_pressed[pygame.K_RIGHT] and user.x < mountainWidth - width - vel_x:
+			print("hello")
+			user.x += vel_x
+			user.move_left = False
+			user.move_right = True
+
 		else:
-			move_left = False
-			move_right = False
-			stepIndex = 0
+			user.move_left = False
+			user.move_right = False
+			user.stepIndex = 0
 		
 		
 
 		#start jumping
 		if keys_pressed[pygame.K_SPACE]:
 			isJump = True
+		
 		for event in pygame.event.get():
 			#check for closing window
 			if event.type == pygame.QUIT:
-				pygame.quit()
-			
+				run = False
+				pygame.quit()	
 	
 		
 		# draw background 
@@ -54,6 +57,7 @@ def pygame_start():
 
 		#draw player
 		user.draw_game()
+
 		#if user.dir=="left":
 		#	user.drawL()
 		#elif user.dir=="right":
