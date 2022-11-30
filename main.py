@@ -4,13 +4,15 @@ from classes import * #this imports the two classes from the classes.py
 import databaseActions #all database actions are here
 
 #700, 398
-
-
 #main Pygame drawing loop function
 def pygame_start():
 	pygame.init()
+
+	#set variable locations
 	mountain = Mountain(0, 0)
 	user = Player(px, ply)  
+	platform = Platform(100, 250)
+	
 	width =  standing.get_width()
 	height = standing.get_height()
 	isJump = False
@@ -39,7 +41,6 @@ def pygame_start():
 			user.move_right = False
 			user.stepIndex = 0
 		
-		
 
 		#start jumping
 		if keys_pressed[pygame.K_SPACE]:
@@ -58,10 +59,8 @@ def pygame_start():
 		#draw player
 		user.draw_game()
 
-		#if user.dir=="left":
-		#	user.drawL()
-		#elif user.dir=="right":
-		#	user.drawR() 
+		#draw platforms
+		platform.draw()
 		
 		#followed this section of the tutorial here
 		#https://www.techwithtim.net/tutorials/game-development-with-python/pygame-tutorial/jumping/
@@ -78,7 +77,7 @@ def pygame_start():
 		
 		pygame.display.flip()
 		
-		clock.tick(60)
+		clock.tick(30)
 		screen.fill(BLACK)
 
 
@@ -88,13 +87,14 @@ def pygame_start():
 #Start OptionMenu
 options = input("Do you want to: \n (A) Create a new account \n (B) Login \n (C) Create Database \n Input Answer: ").upper()
 
+
 if options == "A":
     databaseActions.register() #register  is in databaseActions.py
 elif options == "C":
     databaseActions.createDBandTable() #createDBandTable  is in databaseActions.py
 elif options == "B":
   while databaseActions.login() == False: #createDBandTable function is in databaseActions.py
-    print("try again")
+    print("Please try again")
   pygame_start()
         
 
