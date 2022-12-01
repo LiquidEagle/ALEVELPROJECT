@@ -7,18 +7,25 @@ import databaseActions #all database actions are here
 #main Pygame drawing loop function
 def pygame_start():
 	pygame.init()
-
+	global world
 	#set variable locations
 	mountain = Mountain(0, 0)
 	user = Player(px, ply)  
-	platform = Platform(100, 250)
 	
+	world = World(world_data)
+
 	width =  standing.get_width()
 	height = standing.get_height()
 	isJump = False
 	JUMPHEIGHT = 6
 	jumpCount = JUMPHEIGHT
-	
+
+	def draw_grid():
+		for line in range(0, 20):
+			pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
+			pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height))
+
+
 	done = True
 	while done:
 		
@@ -31,7 +38,6 @@ def pygame_start():
 			user.move_right = False 
 		
 		elif keys_pressed[pygame.K_RIGHT] and user.x < mountainWidth - width - vel_x:
-			print("hello")
 			user.x += vel_x
 			user.move_left = False
 			user.move_right = True
@@ -54,13 +60,14 @@ def pygame_start():
 	
 		
 		# draw background 
-		mountain.draw()  
+		mountain.draw() 
+		world.draw()
+		draw_grid()
+		 
 
 		#draw player
 		user.draw_game()
 
-		#draw platforms
-		platform.draw()
 		
 		#followed this section of the tutorial here
 		#https://www.techwithtim.net/tutorials/game-development-with-python/pygame-tutorial/jumping/
@@ -79,7 +86,6 @@ def pygame_start():
 		
 		clock.tick(30)
 		screen.fill(BLACK)
-
 
 #--------------------------------------------------
 
