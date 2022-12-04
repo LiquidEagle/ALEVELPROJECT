@@ -37,11 +37,20 @@ screen_height = mountainHeight
 screen = pygame.display.set_mode([mountainWidth, mountainHeight])
 pygame.display.set_caption("Platformer Game")
 
+#setting locations of classes
+
+
 #player attributes
-ply = 900
+ply = 800
 px = 70
-vel_x = 10
-vel_y = 10
+vel_x = 0
+vel_y = 0
+dy = 5
+dx = 5
+
+isJump = False
+JUMPHEIGHT = 10
+jumpCount = JUMPHEIGHT
 
 #tile attributes
 tile_size = 50

@@ -7,18 +7,12 @@ import databaseActions #all database actions are here
 #main Pygame drawing loop function
 def pygame_start():
 	pygame.init()
-	global world
+	global world, vel_y, dy, dx
 	#set variable locations
 	mountain = Mountain(0, 0)
 	user = Player(px, ply)  
 	
 	world = World(world_data)
-
-	width =  standing.get_width()
-	height = standing.get_height()
-	isJump = False
-	JUMPHEIGHT = 6
-	jumpCount = JUMPHEIGHT
 
 	def draw_grid():
 		for line in range(0, 20):
@@ -32,13 +26,13 @@ def pygame_start():
 
 		keys_pressed = pygame.key.get_pressed()
 		
-		if keys_pressed[pygame.K_LEFT] and user.x > vel_x:
-			user.x -= vel_x
+		if keys_pressed[pygame.K_LEFT] and user.rect.x > dx:
+			user.rect.x -= dx
 			user.move_left = True
 			user.move_right = False 
 		
-		elif keys_pressed[pygame.K_RIGHT] and user.x < mountainWidth - width - vel_x:
-			user.x += vel_x
+		elif keys_pressed[pygame.K_RIGHT] and user.rect.x < mountainWidth - user.width - dx:
+			user.rect.x += dx
 			user.move_left = False
 			user.move_right = True
 
@@ -46,18 +40,42 @@ def pygame_start():
 			user.move_left = False
 			user.move_right = False
 			user.stepIndex = 0
-		
 
-		#start jumping
-		if keys_pressed[pygame.K_SPACE]:
-			isJump = True
-		
+		for tile in world.tile_list:
+ 			#check for collision in x direction
+			if tile[1].colliderect(user.rect.x + dx, user.rect.y, user.width, user.height):
+				dx = 0
+		for tile in world.tile_list:
+			#check for y collison (tile stored in 1 and image in 0)
+			if tile[1].colliderect(user.rect.x, user.rect.y + dy, user.width, user.height):
+				#check if below ground (jumping)
+				if vel_y < 0:
+					vel_y = tile[1].bottom - user.rectR.top
+					vel_y = 0
+				elif vel_y >= 0:
+					vel_y = tile[1].top - user.rectR.bottom
+					vel_y = 0
+
+			#check for y collison (tile stored in 1 and image in 0)
+			elif tile[1].colliderect(user.rect.x, user.rect.y + dy, user.width, user.height):
+				#check if below ground (jumping)
+				if vel_y < 0:
+					vel_y = tile[1].bottom - user.rectL.top
+					vel_y = 0
+				elif vel_y >= 0:
+					vel_y = tile[1].top - user.rectL.bottom
+					vel_y = 0
+		vel_y += 1
+		if vel_y > 10:
+			vel_y = 10
+		dy += vel_y
+
 		for event in pygame.event.get():
 			#check for closing window
 			if event.type == pygame.QUIT:
-				run = False
+				done = False
 				pygame.quit()	
-	
+		
 		
 		# draw background 
 		mountain.draw() 
@@ -67,23 +85,12 @@ def pygame_start():
 
 		#draw player
 		user.draw_game()
-
-		
-		#followed this section of the tutorial here
-		#https://www.techwithtim.net/tutorials/game-development-with-python/pygame-tutorial/jumping/
-		# its not very OOP but it works
-		if isJump:
-			if jumpCount >= JUMPHEIGHT * -1:
-				user.y -= (jumpCount * abs(jumpCount)) * 0.5
-				jumpCount -= 1
-			else: # This will execute if our jump is finished
-				jumpCount = JUMPHEIGHT
-				isJump = False
-				#resetting the variables
-			 
-		
+		#jump is space is pressed
+		user.jump()
+		#flip the pygame display
 		pygame.display.flip()
 		
+		#frames per second
 		clock.tick(30)
 		screen.fill(BLACK)
 
@@ -102,9 +109,3 @@ elif options == "B":
   while databaseActions.login() == False: #createDBandTable function is in databaseActions.py
     print("Please try again")
   pygame_start()
-        
-
-
-
-
-

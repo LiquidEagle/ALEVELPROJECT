@@ -5,8 +5,11 @@ from config import *
 class Player:
 	def __init__(self, x, y):
 		self.dir = "right"
-		self.x = x
-		self.y = y
+		self.rect = standing.get_rect()
+		self.rect.x = x
+		self.rect.y = y
+		self.width = standing.get_width()
+		self.height = standing.get_height()
 		self.move_left = False
 		self.move_right = False
 		self.stepIndex = 0
@@ -15,18 +18,40 @@ class Player:
 		self.imageL = left[self.stepIndex]
 		self.rectL = self.imageL.get_rect()
 	def draw_game(self):
-		global left, right
+		global left, right, tile, px, ply, vel_y
 		if self.stepIndex >=9:
 			self.stepIndex = 0
 		if self.move_left:
-			screen.blit(left[self.stepIndex], (self.x, self.y))	
+			screen.blit(left[self.stepIndex], (self.rect.x, self.rect.y))	
 			self.stepIndex += 1
 		elif self.move_right:
-			screen.blit(right[self.stepIndex], (self.x, self.y))
+			screen.blit(right[self.stepIndex], (self.rect.x, self.rect.y))
 			self.stepIndex += 1
 		else:
-			screen.blit(standing, (self.x, self.y))
-	
+			screen.blit(standing, (self.rect.x, self.rect.y))
+
+		#collision detection
+		world = World(world_data)
+		
+			
+	def jump(self):
+		global isJump, jumpCount, JUMPHEIGHT
+		#start jumping
+		keys_pressed = pygame.key.get_pressed()
+		if keys_pressed[pygame.K_SPACE]:
+			isJump = True
+
+		#followed this section of the tutorial here
+		#https://www.techwithtim.net/tutorials/game-development-with-python/pygame-tutorial/jumping/
+		# its not very OOP but it works
+		if isJump:
+			if jumpCount >= JUMPHEIGHT * -1:
+				self.rect.y -= (jumpCount * abs(jumpCount)) * 0.5
+				jumpCount -= 1
+			else: # This will execute if our jump is finished
+				jumpCount = JUMPHEIGHT
+				isJump = False
+				#resetting the variables
 class Platform:
 	def __init__(self, x, y):
 		self.x = x
