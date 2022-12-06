@@ -12,7 +12,7 @@ def pygame_start():
 	mountain = Mountain(0, 0)
 	user = Player(px, ply)  
 	
-	world = World(world_data)
+	world = World(world_data) # test
 
 	def draw_grid():
 		for line in range(0, 20):
@@ -25,7 +25,9 @@ def pygame_start():
 		
 
 		keys_pressed = pygame.key.get_pressed()
-		
+
+		if keys_pressed[pygame.K_SPACE]:
+			vel_y = -15
 		if keys_pressed[pygame.K_LEFT] and user.rect.x > dx:
 			user.rect.x -= dx
 			user.move_left = True
@@ -70,6 +72,10 @@ def pygame_start():
 			vel_y = 10
 		dy += vel_y
 
+		if user.rect.bottom > screen_height:
+			user.rect.bottom = screen_height
+			dy = 0
+
 		for event in pygame.event.get():
 			#check for closing window
 			if event.type == pygame.QUIT:
@@ -85,8 +91,8 @@ def pygame_start():
 
 		#draw player
 		user.draw_game()
-		#jump is space is pressed
-		user.jump()
+		#jump if space is pressed
+		#user.jump()
 		#flip the pygame display
 		pygame.display.flip()
 		
