@@ -5,18 +5,16 @@ class Player:
 	def __init__(self, x, y):
 		self.stepIndex = 0
 		self.imageR = right[self.stepIndex]
-		self.rectR = self.imageR.get_rect()
 		self.imageL = left[self.stepIndex]
+		self.rectR = self.imageR.get_rect()
 		self.rectL = self.imageL.get_rect()
-		self.dir = "right"
-		self.rect = standing.get_rect() # CHANGED
+		self.rect = self.imageR.get_rect() # GET STANDING IMAGE RECTANGLE
 		self.rect.x = x
 		self.rect.y = y
-		self.width = self.imageR.get_width() # CHANGED
-		self.height = self.imageR.get_height() # CHANGED
+		self.width = self.imageR.get_width() # GET WIDTH
+		self.height = self.imageR.get_height() # GET HEIGHT
 		self.move_left = False
 		self.move_right = False
-
 
 	def draw_game(self):
 		global left, right, tile, px, ply, vel_y
@@ -57,10 +55,6 @@ class Player:
 		# 		jumpCount = JUMPHEIGHT
 		# 		isJump = False
 		# 		#resetting the variables
-class Platform:
-	def __init__(self, x, y):
-		self.x = x
-		self.y = y
 
 
 class Mountain:

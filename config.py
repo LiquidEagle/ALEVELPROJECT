@@ -43,7 +43,7 @@ pygame.display.set_caption("Platformer Game")
 
 
 #player attributes
-ply = screen_width - 100
+ply = screen_width - 250
 px = 100
 vel_x = 0
 vel_y = 0
