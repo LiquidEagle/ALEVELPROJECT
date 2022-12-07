@@ -15,7 +15,7 @@ right = [None]*10
 for rpic in range(1,10):
     right[rpic-1] = pygame.image.load(os.path.join('assets', 'R' + str(rpic) + '.png'))
     rpic += 1
-  
+
 left = [None]*10
 for lpic in range(1,10):
     left[lpic-1] = pygame.image.load(os.path.join('assets', 'L' + str(lpic) + '.png'))
@@ -41,8 +41,8 @@ pygame.display.set_caption("Platformer Game")
 
 
 #player attributes
-ply = 800
-px = 70
+ply = screen_width - 120
+px = 100
 vel_x = 0
 vel_y = 0
 dy = 5

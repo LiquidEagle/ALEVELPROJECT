@@ -30,28 +30,32 @@ class Player:
 		else:
 			screen.blit(standing, (self.rect.x, self.rect.y))
 
+		#create an outline around the player
+		pygame.draw.rect(screen, WHITE, self.rect, 2)
+
 		#collision detection
-		world = World(world_data)
+		
 		
 			
 	def jump(self):
-		global isJump, jumpCount, JUMPHEIGHT
-		#start jumping
-		keys_pressed = pygame.key.get_pressed()
-		if keys_pressed[pygame.K_SPACE]:
-			isJump = True
+		pass
+		# global isJump, jumpCount, JUMPHEIGHT
+		# #start jumping
+		# keys_pressed = pygame.key.get_pressed()
+		# if keys_pressed[pygame.K_SPACE]:
+		# 	isJump = True
 
 		#followed this section of the tutorial here
 		#https://www.techwithtim.net/tutorials/game-development-with-python/pygame-tutorial/jumping/
 		# its not very OOP but it works
-		if isJump:
-			if jumpCount >= JUMPHEIGHT * -1:
-				self.rect.y -= (jumpCount * abs(jumpCount)) * 0.5
-				jumpCount -= 1
-			else: # This will execute if our jump is finished
-				jumpCount = JUMPHEIGHT
-				isJump = False
-				#resetting the variables
+		# if isJump:
+		# 	if jumpCount >= JUMPHEIGHT * -1:
+		# 		self.rect.y -= (jumpCount * abs(jumpCount)) * 0.5
+		# 		jumpCount -= 1
+		# 	else: # This will execute if our jump is finished
+		# 		jumpCount = JUMPHEIGHT
+		# 		isJump = False
+		# 		#resetting the variables
 class Platform:
 	def __init__(self, x, y):
 		self.x = x
