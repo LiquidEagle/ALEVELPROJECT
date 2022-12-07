@@ -1,22 +1,23 @@
-#This file contains the TWO classes used in the game
 import pygame
 from config import *
 
 class Player:
 	def __init__(self, x, y):
-		self.dir = "right"
-		self.rect = standing.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.width = standing.get_width()
-		self.height = standing.get_height()
-		self.move_left = False
-		self.move_right = False
 		self.stepIndex = 0
 		self.imageR = right[self.stepIndex]
 		self.rectR = self.imageR.get_rect()
 		self.imageL = left[self.stepIndex]
 		self.rectL = self.imageL.get_rect()
+		self.dir = "right"
+		self.rect = standing.get_rect() # CHANGED
+		self.rect.x = x
+		self.rect.y = y
+		self.width = self.imageR.get_width() # CHANGED
+		self.height = self.imageR.get_height() # CHANGED
+		self.move_left = False
+		self.move_right = False
+
+
 	def draw_game(self):
 		global left, right, tile, px, ply, vel_y
 		if self.stepIndex >=9:

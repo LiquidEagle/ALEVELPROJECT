@@ -21,6 +21,8 @@ for lpic in range(1,10):
     left[lpic-1] = pygame.image.load(os.path.join('assets', 'L' + str(lpic) + '.png'))
     lpic += 1
 
+Rimg = pygame.image.load('assets/R1.png')
+Limg = pygame.image.load('assets/L1.png')
 standing = pygame.image.load('assets/standing.png')
 mountains = pygame.image.load('assets/snow.png') 
 mountains = pygame.transform.scale(mountains, (1000,1000))
@@ -41,7 +43,7 @@ pygame.display.set_caption("Platformer Game")
 
 
 #player attributes
-ply = screen_width - 120
+ply = screen_width - 100
 px = 100
 vel_x = 0
 vel_y = 0
