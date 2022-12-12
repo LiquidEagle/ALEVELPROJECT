@@ -8,11 +8,11 @@ class Player:
 		self.imageL = left[self.stepIndex]
 		self.rectR = self.imageR.get_rect()
 		self.rectL = self.imageL.get_rect()
-		self.rect = self.imageR.get_rect() # GET STANDING IMAGE RECTANGLE
+		self.rect = standing.get_rect() # GET STANDING IMAGE RECTANGLE
 		self.rect.x = x
 		self.rect.y = y
-		self.width = self.imageR.get_width() # GET WIDTH
-		self.height = self.imageR.get_height() # GET HEIGHT
+		self.width = standing.get_width() # GET WIDTH
+		self.height = standing.get_height() # GET HEIGHT
 		self.move_left = False
 		self.move_right = False
 

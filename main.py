@@ -13,7 +13,7 @@ def pygame_start():
     mountain = Mountain(0, 0)
     user = Player(px, ply)
 
-    world = World(world_data)  # test
+    world = World(world_data)
 
     def draw_grid():
         for line in range(0, 20):
@@ -46,19 +46,12 @@ def pygame_start():
         vel_y += 1
         if vel_y > 10:
             vel_y = 10
-
         dy += vel_y
-        user.rect.y += dy
-        # temp
-        # if user.rect.bottom > screen_height:
-        #     user.rect.bottom = screen_height
-        #     dy = 0
 
-        # for tile in world.tile_list:
-        #     # check for collision in x direction
-        #     if tile[1].colliderect(user.rect.x + dx, user.rect.y, user.width, user.height):
-        #         dx = 0
         for tile in world.tile_list:
+            # check for collision in x direction
+            if tile[1].colliderect(user.rect.x + dx, user.rect.y, user.width, user.height):
+                dx = 0
             # check for y collison (tile stored in 1 and image in 0)
             if tile[1].colliderect(user.rect.x, user.rect.y + dy, user.width, user.height):
                 # check if below ground (jumping)
@@ -68,13 +61,18 @@ def pygame_start():
                 elif vel_y >= 0:
                     dy = tile[1].top - user.rect.bottom
                     vel_y = 0
+
+        user.rect.y += dy
+        # temp
+        if user.rect.bottom > screen_height:
+            user.rect.bottom = screen_height
+            dy = 0
+
         for event in pygame.event.get():
             # check for closing window
             if event.type == pygame.QUIT:
                 done = False
                 pygame.quit()
-
-
 
         # draw background
         mountain.draw()
