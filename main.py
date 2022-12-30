@@ -8,12 +8,13 @@ import databaseActions  # all database actions are here
 # main Pygame drawing loop function
 def pygame_start():
     pygame.init()
-    global world, vel_y, dy, dx, isJump
+    global world, vel_y, dy, game_over, restart_img
+
     # set variable locations
     mountain = Mountain(0, 0)
     user = Player(px, ply)
-
     world = World(world_data)
+    restart = Buttons(screen_width // 2 - 60, screen_height // 2, restart_img)
 
     def draw_grid():
         for line in range(0, 20):
@@ -22,47 +23,6 @@ def pygame_start():
 
     done = True
     while done:
-
-        keys_pressed = pygame.key.get_pressed()
-        if keys_pressed[pygame.K_SPACE] and isJump == False:
-            vel_y = -15
-            isJump = True
-        if keys_pressed[pygame.K_SPACE] == False:
-            isJump = False
-        if keys_pressed[pygame.K_LEFT] and user.rect.x > dx:
-            user.rect.x -= dx
-            user.move_left = True
-            user.move_right = False
-
-        elif keys_pressed[pygame.K_RIGHT] and user.rect.x < mountainWidth - user.width - dx:
-            user.rect.x += dx
-            user.move_left = False
-            user.move_right = True
-        else:
-            user.move_left = False
-            user.move_right = False
-            user.stepIndex = 0
-
-        vel_y += 1
-        if vel_y > 10:
-            vel_y = 10
-        dy += vel_y
-
-        for tile in world.tile_list:
-            # check for collision in x direction
-            if tile[1].colliderect(user.rect.x + dx, user.rect.y, user.width, user.height):
-                dx = 0
-            # check for y collison (tile stored in 1 and image in 0)
-            if tile[1].colliderect(user.rect.x, user.rect.y + dy, user.width, user.height):
-                # check if below ground (jumping)
-                if vel_y < 0:
-                    dy = tile[1].bottom - user.rect.top
-                    vel_y = 0
-                elif vel_y >= 0:
-                    dy = tile[1].top - user.rect.bottom
-                    vel_y = 0
-
-        user.rect.y += dy
         # temp
         if user.rect.bottom > screen_height:
             user.rect.bottom = screen_height
@@ -77,10 +37,29 @@ def pygame_start():
         # draw background
         mountain.draw()
         world.draw()
+
+        #draw grid (temp)
         draw_grid()
 
+        if game_over == 0:
+            world.blob_group.update()
+            user.draw_game()
+            
+        #draw blob
+        world.blob_group.draw(screen)
+        
         # draw player
-        user.draw_game()
+        
+        game_over = user.update_player(game_over)
+
+        if game_over == -1:
+            if restart.draw():
+                user.has_reset(px, ply) # if player dead draw the buttons
+                game_over = 0
+
+        #draw danger areas
+        world.lava_group.draw(screen)
+
         # jump if space is pressed
         # user.jump()
         # flip the pygame display

@@ -28,34 +28,35 @@ mountains = pygame.image.load('assets/snow.png')
 mountains = pygame.transform.scale(mountains, (1000,1000))
 dirt_img = pygame.image.load('assets/dirt.png')
 grass_img = pygame.image.load('assets/grass.png')
-
+dead_img = pygame.image.load('assets/dead.png')
+restart_img = pygame.image.load('assets/restart.png')
+restart_img = pygame.transform.scale(restart_img, (120,50))
 
 mountainWidth = mountains.get_width()
 mountainHeight = mountains.get_height()
-screen_width = mountainWidth
-screen_height = mountainHeight
+screen_width = 1000
+screen_height = 1000
 
 # Set up the drawing window
 screen = pygame.display.set_mode([mountainWidth, mountainHeight])
 pygame.display.set_caption("Platformer Game")
 
-#setting locations of classes
-
+#blob attributes
+#blob_group = pygame.sprite.Group()
 
 #player attributes
 ply = screen_width - 250
 px = 100
 vel_x = 0
 vel_y = 0
-dy = 5
-dx = 5
 
-isJump = False
-JUMPHEIGHT = 10
+JUMPHEIGHT = 5
 jumpCount = JUMPHEIGHT
 
 #tile attributes
 tile_size = 50
+game_over = 0
+
 
 
 world_data = [
@@ -69,14 +70,14 @@ world_data = [
 [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 7, 0, 0, 0, 0, 1], 
 [1, 0, 2, 0, 0, 7, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
-[1, 0, 0, 2, 0, 0, 4, 0, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0, 0, 1], 
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 1], 
+[1, 0, 0, 2, 0, 0, 4, 0, 0, 0, 3, 0, 0, 3, 0, 0, 0, 0, 0, 1], 
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 1], 
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 7, 0, 0, 0, 0, 2, 0, 1], 
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 1], 
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1, 1, 1, 1, 1, 1], 
-[1, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1], 
+[1, 0, 0, 0, 0, 0, 2, 2, 2, 6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1], 
 [1, 0, 0, 0, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
 [1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
