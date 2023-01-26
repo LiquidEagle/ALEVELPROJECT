@@ -42,11 +42,11 @@ def pygame_start():
         draw_grid()
 
         if game_over == 0:
-            world.blob_group.update()
+            World.blob_group.update()
             user.draw_game()
-            
+        world.platform_group.update()
         #draw blob
-        world.blob_group.draw(screen)
+
         
         # draw player
         
@@ -59,14 +59,15 @@ def pygame_start():
 
         #draw danger areas
         world.lava_group.draw(screen)
-
+        World.blob_group.draw(screen)
+        world.platform_group.draw(screen)
         # jump if space is pressed
         # user.jump()
         # flip the pygame display
         pygame.display.flip()
 
         # frames per second
-        clock.tick(30)
+        clock.tick(60)
         screen.fill(BLACK)
 
 
