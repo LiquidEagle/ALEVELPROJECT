@@ -231,8 +231,9 @@ class Enemy(pygame.sprite.Sprite):
 class Platform(pygame.sprite.Sprite):
     def __init__(self,x,y,moveright,moveleft):
         pygame.sprite.Sprite.__init__(self)
-        image = pygame.image.load('assets/platorm.png')
+        image = pygame.image.load('assets/platform.png')
         self.image = pygame.transform.scale(image, (tile_size, tile_size // 2))
+        self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.dir = 1
@@ -242,10 +243,10 @@ class Platform(pygame.sprite.Sprite):
     def update(self):
         self.rect.x +=self.dir
         self.count += 1
-        if abs(self.counter) > 50:
+        if abs(self.count) > 50:
             # checks for absolute value, so even if the counter is negative it will return a positive value
             self.dir *= -1  # turn left when couter is above 50
-            self.counter *= -1  # reset the counter
+            self.count *= -1  # reset the counter
 
 class Danger(pygame.sprite.Sprite):
     def __init__(self, x, y):
