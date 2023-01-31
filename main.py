@@ -8,7 +8,7 @@ import databaseActions  # all database actions are here
 # main Pygame drawing loop function
 def pygame_start():
     pygame.init()
-    global world, vel_y, dy, game_over, restart_img, weapon_picked
+    global world, vel_y, dy, game_over, restart_img, screen
 
     # set variable locations
     mountain = Mountain(0, 0)
@@ -23,11 +23,6 @@ def pygame_start():
 
     done = True
     while done:
-        # temp
-        if user.rect.bottom > screen_height:
-            user.rect.bottom = screen_height
-            dy = 0
-
         for event in pygame.event.get():
             # check for closing window
             if event.type == pygame.QUIT:
@@ -46,11 +41,9 @@ def pygame_start():
             user.draw_game()
         world.platform_group.update()
         world.door_group.draw(screen)
-        #draw weapon
-        world.weapon_group.draw(screen)
         #draw blob
 
-
+        
         # draw player
         
         game_over = user.update_player(game_over)
@@ -68,7 +61,7 @@ def pygame_start():
         # user.jump()
         # flip the pygame display
         pygame.display.flip()
-
+        
         # frames per second
         clock.tick(60)
         screen.fill(BLACK)
@@ -89,3 +82,4 @@ elif options == "B":
     while databaseActions.login() == False:  # createDBandTable function is in databaseActions.py
         print("Please try again")
     pygame_start()
+

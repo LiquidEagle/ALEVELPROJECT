@@ -42,7 +42,7 @@ screen = pygame.display.set_mode([mountainWidth, mountainHeight])
 pygame.display.set_caption("Platformer Game")
 
 #blob attributes
-#blob_group = pygame.sprite.Group()
+
 
 #player attributes
 ply = screen_width - 250

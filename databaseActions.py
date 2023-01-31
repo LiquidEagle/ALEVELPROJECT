@@ -1,5 +1,17 @@
 # All Database stuff goes in here!!
 import sqlite3
+from cryptography.fernet import Fernet
+
+key = Fernet.generate_key()
+cipher = Fernet(key)
+
+def encrypt(message: bytes, key: bytes):
+    return Fernet(key).encrypt(message)
+def decrypt(token: bytes, key: bytes):
+    return Fernet(key).decrypt(token)
+
+print(ciphered_text)
+
 
 con = sqlite3.connect('alldata.db')
 cursor = con.cursor()

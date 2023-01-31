@@ -113,6 +113,22 @@ class Player:
                 pygame.sprite.spritecollide(self, world.weapon_group, True)
             self.rect.x += dx
             self.rect.y += dy
+
+            for platform in world.platform_group:
+                # check for collision in x direction
+                if platform.rect.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                    dx = 0
+                # check for y collison (tile stored in 1 and image in 0)
+                if platform.rect.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                    # check if below ground (jumping)
+                    if self.vel_y < 0:
+                        dy = platform.rect.bottom - self.rect.top
+                        self.vel_y = 0
+                    # check if above the ground (falling)
+                    elif self.vel_y >= 0:
+                        dy = platform.rect.top - self.rect.bottom
+                        self.vel_y = 0
+                        self.jumping = False
         elif game_over == -1:
             dead_img = pygame.transform.scale(dead_img, (tile_size, tile_size))
             screen.blit(dead_img, (self.rect.x + 5, self.rect.y))
@@ -168,7 +184,6 @@ class Mountain:
 
     def draw(self):
         screen.blit(mountains, (self.x, self.y))
-
 
 class World:
     def __init__(self, data):
@@ -263,6 +278,7 @@ class Platform(pygame.sprite.Sprite):
 
 class Danger(pygame.sprite.Sprite):
     def __init__(self, x, y):
+        
         pygame.sprite.Sprite.__init__(self)
         img = pygame.image.load('assets/lava.png')
         self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))
