@@ -8,7 +8,7 @@ import databaseActions  # all database actions are here
 # main Pygame drawing loop function
 def pygame_start():
     pygame.init()
-    global world, vel_y, dy, game_over, restart_img
+    global world, vel_y, dy, game_over, restart_img, weapon_picked
 
     # set variable locations
     mountain = Mountain(0, 0)
@@ -42,12 +42,15 @@ def pygame_start():
         draw_grid()
 
         if game_over == 0:
-            World.blob_group.update()
+            world.blob_group.update()
             user.draw_game()
         world.platform_group.update()
+        world.door_group.draw(screen)
+        #draw weapon
+        world.weapon_group.draw(screen)
         #draw blob
 
-        
+
         # draw player
         
         game_over = user.update_player(game_over)
@@ -59,7 +62,7 @@ def pygame_start():
 
         #draw danger areas
         world.lava_group.draw(screen)
-        World.blob_group.draw(screen)
+        world.blob_group.draw(screen)
         world.platform_group.draw(screen)
         # jump if space is pressed
         # user.jump()
