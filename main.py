@@ -8,7 +8,7 @@ import databaseActions  # all database actions are here
 # main Pygame drawing loop function
 def pygame_start():
     pygame.init()
-    global world, vel_y, dy, game_over, restart_img
+    global world, vel_y, dy, game_over, restart_img, platform_group
 
     # set variable locations
     mountain = Mountain(0, 0)
@@ -23,6 +23,7 @@ def pygame_start():
 
     done = True
     while done:
+
         # temp
         if user.rect.bottom > screen_height:
             user.rect.bottom = screen_height
@@ -42,9 +43,10 @@ def pygame_start():
         draw_grid()
 
         if game_over == 0:
-            World.blob_group.update()
+            world.blob_group.update()
             user.draw_game()
         world.platform_group.update()
+        world.door_group.draw(screen)
         #draw blob
 
         
@@ -59,7 +61,7 @@ def pygame_start():
 
         #draw danger areas
         world.lava_group.draw(screen)
-        World.blob_group.draw(screen)
+        world.blob_group.draw(screen)
         world.platform_group.draw(screen)
         # jump if space is pressed
         # user.jump()
@@ -86,3 +88,5 @@ elif options == "B":
     while databaseActions.login() == False:  # createDBandTable function is in databaseActions.py
         print("Please try again")
     pygame_start()
+
+platform_group = pygame.sprite.Group()

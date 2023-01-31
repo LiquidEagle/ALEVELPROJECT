@@ -1,7 +1,6 @@
 import pygame
 from config import *
 
-
 class Buttons():
     def __init__(self, x, y, image):
         self.image = image
@@ -96,15 +95,17 @@ class Player:
                         dy = tile[1].top - self.rect.bottom
                         self.vel_y = 0
                         self.jumping = False
-
             # check for collision with danger or enemies
-            if pygame.sprite.spritecollide(self, World.blob_group, False):
+            # See if the Sprite block has collided with anything in the Groups
+            # The False flag will not remove the sprite in lists
+            if pygame.sprite.spritecollide(self, world.blob_group, False):
                 game_over = -1
                 print(game_over)
             if pygame.sprite.spritecollide(self, world.lava_group, False):
                 game_over = -1
                 print(game_over)
-
+            if pygame.sprite.spritecollide(self, world.platform_group, False):
+                print("collided with platform ! ! ! !")
             self.rect.x += dx
             self.rect.y += dy
         elif game_over == -1:
@@ -165,13 +166,14 @@ class Mountain:
 
 
 class World:
-    blob_group = pygame.sprite.Group()
+    
     def __init__(self, data):
         self.tile_list = []
         row_count = 0
-
+        self.blob_group = pygame.sprite.Group()
         self.lava_group = pygame.sprite.Group()
         self.platform_group = pygame.sprite.Group()
+        self.door_group = pygame.sprite.Group()
         for row in data:
             column_count = 0
             for tile in row:
@@ -198,7 +200,9 @@ class World:
                 if tile == 7:
                     platform = Platform(column_count * tile_size, row_count * tile_size + int((tile_size / 2)),0,1)
                     self.platform_group.add(platform)
-
+                if tile == 8:
+                    door = Door(column_count*tile_size, row_count*tile_size)
+                    self.door_group.add(door)
                 # where the instances are on the map
                 column_count += 1
             row_count += 1
@@ -263,3 +267,12 @@ class Weapons():
 # def __init__(self, x,y):
 # 	self.image = pygame.image.load('assets/')
 # 	self.rect = self.image.get_rect()
+
+class Door(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        image = pygame.image.load('assets/door.png')
+        self.image = pygame.transform.scale(image, (tile_size, tile_size))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
