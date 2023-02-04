@@ -8,12 +8,12 @@ import databaseActions  # all database actions are here
 # main Pygame drawing loop function
 def pygame_start():
     pygame.init()
-    global world, vel_y, dy, game_over, restart_img, screen
+    global vel_y, game_over, world
 
     # set variable locations
     mountain = Mountain(0, 0)
     user = Player(px, ply)
-    world = World(world_data)
+    #world = World(world_data)
     restart = Buttons(screen_width // 2 - 60, screen_height // 2, restart_img)
 
     def draw_grid():
@@ -24,47 +24,45 @@ def pygame_start():
     done = True
     while done:
         for event in pygame.event.get():
-            # check for closing window
+            # check for closing window 
             if event.type == pygame.QUIT:
                 done = False
                 pygame.quit()
-
+        screen.fill(0)
+        clock.tick(60)
         # draw background
         mountain.draw()
         world.draw()
 
         #draw grid (temp)
-        draw_grid()
+        #draw_grid()
 
         if game_over == 0:
-            world.blob_group.update()
+            blob_group.update()
             user.draw_game()
-        world.platform_group.update()
-        world.door_group.draw(screen)
-        #draw blob
+        platform_group.update()
+        
 
         
-        # draw player
-        
+        # draw groups
+        blob_group.draw(screen)
+        platform_group.draw(screen)
+        lava_group.draw(screen)
+        door_group.draw(screen)
+        weapon_group.draw(screen)
+
         game_over = user.update_player(game_over)
 
         if game_over == -1:
             if restart.draw():
                 user.has_reset(px, ply) # if player dead draw the buttons
                 game_over = 0
-
-        #draw danger areas
-        world.lava_group.draw(screen)
-        world.blob_group.draw(screen)
-        world.platform_group.draw(screen)
-        # jump if space is pressed
-        # user.jump()
+                
         # flip the pygame display
         pygame.display.flip()
-        
         # frames per second
-        clock.tick(60)
-        screen.fill(BLACK)
+        
+        #screen.fill(BLACK)
 
 
 # --------------------------------------------------
