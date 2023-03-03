@@ -15,8 +15,8 @@ gun_playerR = 'RG'
 normal_playerL = 'L'
 gun_playerL = 'LG'
 
-picR = gun_playerR
-picL = gun_playerL
+picR = normal_playerR
+picL = normal_playerL
 
 right = [None]*10
 for rpic in range(1,10):

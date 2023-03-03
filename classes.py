@@ -33,25 +33,27 @@ class Player:
 
     def draw_game(self):
         global left, right, px, ply, vel_y, is_standing
-        if self.count > 2:
+        # if self.count > 9:
+        #     self.count = 0
+        #     self.stepIndex +=1
+        if self.stepIndex >= 9:
+            self.stepIndex = 0
+        if self.move_left:
+            screen.blit(left[self.stepIndex], (self.rect.x, self.rect.y))
+            self.stepIndex += 1
+        elif self.move_right:
+            screen.blit(right[self.stepIndex], (self.rect.x, self.rect.y))
+            self.stepIndex += 1
+        else:
+            screen.blit(standing, (self.rect.x, self.rect.y))
+            is_standing = True
             self.count = 0
-            if self.stepIndex >= 9:
-                self.stepIndex = 0
-            if self.move_left:
-                screen.blit(left[self.stepIndex], (self.rect.x, self.rect.y))
-                self.stepIndex += 1
-            elif self.move_right:
-                screen.blit(right[self.stepIndex], (self.rect.x, self.rect.y))
-                self.stepIndex += 1
-            else:
-                screen.blit(standing, (self.rect.x, self.rect.y))
-                is_standing = True
 
         # create an outline around the player
         pygame.draw.rect(screen, WHITE, self.rect, 2)
 
     def update_player(self, game_over):
-        global standing, dead_img, weapon_picked, picR,picL
+        global standing, dead_img, weapon_picked, picR,picL, gun_playerR, gun_playerL
         dy = 0
         dx = 0
 
@@ -75,23 +77,21 @@ class Player:
                 self.count += 1
                 self.move_left = True
                 self.move_right = False
-            elif keys_pressed[pygame.K_RIGHT]:
+            if keys_pressed[pygame.K_RIGHT]:
                 dx += 5
                 self.count += 1
                 self.move_left = False
                 self.move_right = True
-            else:
+            if keys_pressed[pygame.K_LEFT] == False and keys_pressed[pygame.K_RIGHT] == False:
                 self.move_left = False
                 self.move_right = False
                 self.stepIndex = 0
                 self.counter = 0
-                
-            
+
             self.vel_y += 1
             if self.vel_y > 10:
                 self.vel_y = 10
             dy += self.vel_y
-            print(self.count)
 
             # collision detection
             
@@ -125,10 +125,12 @@ class Player:
             if pygame.sprite.spritecollide(self, weapon_group, False):
                 weapon_picked = 1
                 print("collided with weapon")
-            if weapon_picked == 1:
-                pygame.sprite.spritecollide(self, weapon_group, True)
                 picR = gun_playerR
                 picL = gun_playerL
+                print(picR)
+            if weapon_picked == 1:
+                pygame.sprite.spritecollide(self, weapon_group, True)
+
 
             self.rect.x += dx
             self.rect.y += dy
