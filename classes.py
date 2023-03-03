@@ -32,28 +32,39 @@ class Player:
         self.has_reset(x, y)
 
     def draw_game(self):
-        global left, right, px, ply, vel_y
-        if self.stepIndex >= 9:
-            self.stepIndex = 0
-        if self.move_left:
-            screen.blit(left[self.stepIndex], (self.rect.x, self.rect.y))
-            self.stepIndex += 1
-        elif self.move_right:
-            screen.blit(right[self.stepIndex], (self.rect.x, self.rect.y))
-            self.stepIndex += 1
-        else:
-            screen.blit(standing, (self.rect.x, self.rect.y))
+        global left, right, px, ply, vel_y, is_standing
+        if self.count > 2:
+            self.count = 0
+            if self.stepIndex >= 9:
+                self.stepIndex = 0
+            if self.move_left:
+                screen.blit(left[self.stepIndex], (self.rect.x, self.rect.y))
+                self.stepIndex += 1
+            elif self.move_right:
+                screen.blit(right[self.stepIndex], (self.rect.x, self.rect.y))
+                self.stepIndex += 1
+            else:
+                screen.blit(standing, (self.rect.x, self.rect.y))
+                is_standing = True
 
         # create an outline around the player
         pygame.draw.rect(screen, WHITE, self.rect, 2)
 
     def update_player(self, game_over):
-        global standing, dead_img, weapon_picked
+        global standing, dead_img, weapon_picked, picR,picL
         dy = 0
         dx = 0
 
         if game_over == 0:
             keys_pressed = pygame.key.get_pressed()
+            if keys_pressed[pygame.K_a]:
+                if self.move_left:
+                    self.dir = -1
+                else:
+                    self.dir = 1
+                if weapon_picked ==1:
+                    if len(mainbullets) < 5:
+                        mainbullets.append(Bullet(self.rect.x-15,self.rect.y))
             if keys_pressed[pygame.K_SPACE] and self.isJump == False and self.jumping == False:
                 self.vel_y = -15
                 self.isJump = True
@@ -61,22 +72,26 @@ class Player:
                 self.isJump = False
             if keys_pressed[pygame.K_LEFT]:
                 dx -= 5
+                self.count += 1
                 self.move_left = True
                 self.move_right = False
-
             elif keys_pressed[pygame.K_RIGHT]:
                 dx += 5
+                self.count += 1
                 self.move_left = False
                 self.move_right = True
             else:
                 self.move_left = False
                 self.move_right = False
                 self.stepIndex = 0
-
+                self.counter = 0
+                
+            
             self.vel_y += 1
             if self.vel_y > 10:
                 self.vel_y = 10
             dy += self.vel_y
+            print(self.count)
 
             # collision detection
             
@@ -112,6 +127,8 @@ class Player:
                 print("collided with weapon")
             if weapon_picked == 1:
                 pygame.sprite.spritecollide(self, weapon_group, True)
+                picR = gun_playerR
+                picL = gun_playerL
 
             self.rect.x += dx
             self.rect.y += dy
@@ -163,6 +180,7 @@ class Player:
 
     def has_reset(self, x, y):
         self.stepIndex = 0
+        self.count = 0
         self.imageR = right[self.stepIndex]
         self.imageL = left[self.stepIndex]
         #self.gunR = gunR[self.stepIndex]
@@ -176,7 +194,7 @@ class Player:
         self.vel_y = 0
         self.isJump = False  # check if player is jumping
         self.jumping = False  # check if player is in the air
-
+        self.dir = 0
 
 class Mountain:
     global tile_size
@@ -303,6 +321,17 @@ class Weapons(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+
+class Bullet():
+    def __init__(self,x,y):
+        self.image = pygame.image.load('assets/bulletimg.png')
+        self.image = pygame.transform.rotate(self.image, 90)
+        self.rect = self.image.get_rect()
+        self.rect.center = (x,y)
+        self.rect.x = x
+        self.rect.y = y
+    def draw(self):
+        screen.blit(self.image, (self.rect.x, self.rect.y))
 
 blob_group = pygame.sprite.Group()
 lava_group = pygame.sprite.Group()

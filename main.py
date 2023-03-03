@@ -8,7 +8,7 @@ import databaseActions  # all database actions are here
 # main Pygame drawing loop function
 def pygame_start():
     pygame.init()
-    global vel_y, game_over, world
+    global vel_y, game_over, world, mainbullets, weapon_picked
 
     # set variable locations
     mountain = Mountain(0, 0)
@@ -20,7 +20,7 @@ def pygame_start():
         for line in range(0, 20):
             pygame.draw.line(screen, WHITE, (0, line * tile_size), (screen_width, line * tile_size))
             pygame.draw.line(screen, WHITE, (line * tile_size, 0), (line * tile_size, screen_height))
-
+    
     done = True
     while done:
         for event in pygame.event.get():
@@ -57,6 +57,14 @@ def pygame_start():
             if restart.draw():
                 user.has_reset(px, ply) # if player dead draw the buttons
                 game_over = 0
+        
+        for bul in mainbullets:
+                if bul.rect.x < screen_width and bul.rect.x > 0:
+                        bul.draw()
+                        bul.rect.x += 10 * user.dir
+                else:
+                    mainbullets.remove(bul)
+
                 
         # flip the pygame display
         pygame.display.flip()

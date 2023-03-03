@@ -10,15 +10,22 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 
 #images
+normal_playerR = 'R'
+gun_playerR = 'RG'
+normal_playerL = 'L'
+gun_playerL = 'LG'
+
+picR = gun_playerR
+picL = gun_playerL
 
 right = [None]*10
 for rpic in range(1,10):
-    right[rpic-1] = pygame.image.load(os.path.join('assets', 'R' + str(rpic) + '.png'))
+    right[rpic-1] = pygame.image.load(os.path.join('assets', picR + str(rpic) + '.png'))
     rpic += 1
 
 left = [None]*10
 for lpic in range(1,10):
-    left[lpic-1] = pygame.image.load(os.path.join('assets', 'L' + str(lpic) + '.png'))
+    left[lpic-1] = pygame.image.load(os.path.join('assets', picL + str(lpic) + '.png'))
     lpic += 1
 
 
@@ -26,6 +33,7 @@ for lpic in range(1,10):
 Rimg = pygame.image.load('assets/R1.png')
 Limg = pygame.image.load('assets/L1.png')
 standing = pygame.image.load('assets/standing.png')
+
 mountains = pygame.image.load('assets/snow.png')
 mountains = pygame.transform.scale(mountains, (1000,1000))
 dirt_img = pygame.image.load('assets/dirt.png')
@@ -51,10 +59,10 @@ ply = screen_width - 250
 px = 100
 vel_x = 0
 vel_y = 0
-
+mainbullets = []
 JUMPHEIGHT = 5
 jumpCount = JUMPHEIGHT
-
+is_standing = False
 #tile attributes
 tile_size = 50
 game_over = 0
