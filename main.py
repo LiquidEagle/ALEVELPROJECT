@@ -8,7 +8,7 @@ import databaseActions  # all database actions are here
 # main Pygame drawing loop function
 def pygame_start():
     pygame.init()
-    global vel_y, game_over, world, mainbullets, weapon_picked
+    global vel_y, game_over, world, mainbullets, weapon_picked, health
 
     # set variable locations
     mountain = Mountain(0, 0)
@@ -40,9 +40,13 @@ def pygame_start():
         if game_over == 0:
             blob_group.update()
             user.draw_game()
-        platform_group.update()
-        
-
+            platform_group.update()
+        # for bul in mainbullets:
+        #     if bul.rect.y - 6 < blob_group.rect.x + blob_group.height and bul.rect.y + 6 > blob_group.rect.y:  # Checks x coords
+        #         if bul.rect.x + 6 > blob_group.rect.x and bul.x - 6 < blob_group.rect.x + blob_group.width: # Checks y coords
+        #             health -= 1  # calls enemy hit method
+        #             mainbullets.remove(bul)  # removes bullet from bullet list
+        # DOESN'T WORK I HATE PYGAME SO MUCH AND THIS STUPID COLLISION DETECTION BS
         
         # draw groups
         blob_group.draw(screen)

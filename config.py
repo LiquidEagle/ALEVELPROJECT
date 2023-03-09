@@ -63,6 +63,8 @@ mainbullets = []
 JUMPHEIGHT = 5
 jumpCount = JUMPHEIGHT
 is_standing = False
+health = 10
+
 #tile attributes
 tile_size = 50
 game_over = 0
