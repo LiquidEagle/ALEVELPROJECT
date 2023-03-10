@@ -8,7 +8,7 @@ import databaseActions  # all database actions are here
 # main Pygame drawing loop function
 def pygame_start():
     pygame.init()
-    global vel_y, game_over, world, mainbullets, weapon_picked, health
+    global vel_y, game_over, world, mainbullets, weapon_picked, health, enemy_health
 
     # set variable locations
     mountain = Mountain(0, 0)
@@ -38,18 +38,32 @@ def pygame_start():
         #draw_grid()
 
         if game_over == 0:
-            blob_group.update()
+            enemy_group.update()
             user.draw_game()
             platform_group.update()
         # for bul in mainbullets:
-        #     if bul.rect.y - 6 < blob_group.rect.x + blob_group.height and bul.rect.y + 6 > blob_group.rect.y:  # Checks x coords
+        #     if bul.rect.y - 6 < blob_group.rect.y + blob_group.height and bul.rect.y + 6 > blob_group.rect.y:  # Checks x coords
         #         if bul.rect.x + 6 > blob_group.rect.x and bul.x - 6 < blob_group.rect.x + blob_group.width: # Checks y coords
         #             health -= 1  # calls enemy hit method
         #             mainbullets.remove(bul)  # removes bullet from bullet list
         # DOESN'T WORK I HATE PYGAME SO MUCH AND THIS STUPID COLLISION DETECTION BS
+        # kill enemy when hit 10 times
+
+        for bul in mainbullets:
+            if pygame.sprite.spritecollide(bul, enemy_group, False):
+                print("Enemy health: " + str(enemy_health))
+                enemy_health -=1
+                mainbullets.remove(bul)
+            if enemy_health ==0:
+                pygame.sprite.spritecollide(bul, enemy_group, True)
+            for tile in world.tile_list:
+                # check for collision in x direction
+                if tile[1].colliderect(bul.rect.x, bul.rect.y, bul.width, bul.height):
+                    mainbullets.remove(bul)
+
         
         # draw groups
-        blob_group.draw(screen)
+        enemy_group.draw(screen)
         platform_group.draw(screen)
         lava_group.draw(screen)
         door_group.draw(screen)

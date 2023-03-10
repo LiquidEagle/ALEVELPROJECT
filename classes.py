@@ -53,7 +53,7 @@ class Player:
         pygame.draw.rect(screen, WHITE, self.rect, 2)
 
     def update_player(self, game_over):
-        global standing, dead_img, weapon_picked, picR,picL, gun_playerR, gun_playerL
+        global standing, dead_img, weapon_picked, picR, picL, gun_playerR, gun_playerL
         dy = 0
         dx = 0
 
@@ -64,9 +64,9 @@ class Player:
                     self.dir = -1
                 else:
                     self.dir = 1
-                if weapon_picked ==1:
+                if weapon_picked == 1:
                     if len(mainbullets) < 5:
-                        mainbullets.append(Bullet(self.rect.x-15,self.rect.y))
+                        mainbullets.append(Bullet(self.rect.x - 15, self.rect.y))
             if keys_pressed[pygame.K_SPACE] and self.isJump == False and self.jumping == False:
                 self.vel_y = -15
                 self.isJump = True
@@ -94,7 +94,7 @@ class Player:
             dy += self.vel_y
 
             # collision detection
-            
+
             self.jumping = True
             for tile in world.tile_list:
                 # check for collision in x direction
@@ -113,7 +113,7 @@ class Player:
                         self.jumping = False
 
             # check for collision with danger or enemies
-            if pygame.sprite.spritecollide(self, blob_group, False):
+            if pygame.sprite.spritecollide(self, enemy_group, False):
                 game_over = -1
                 print("you hit the enemy")
                 print(game_over)
@@ -130,7 +130,6 @@ class Player:
                 print(picR)
             if weapon_picked == 1:
                 pygame.sprite.spritecollide(self, weapon_group, True)
-
 
             self.rect.x += dx
             self.rect.y += dy
@@ -185,7 +184,7 @@ class Player:
         self.count = 0
         self.imageR = right[self.stepIndex]
         self.imageL = left[self.stepIndex]
-        #self.gunR = gunR[self.stepIndex]
+        # self.gunR = gunR[self.stepIndex]
         self.rect = standing.get_rect()  # GET STANDING IMAGE RECTANGLE
         self.rect.x = x
         self.rect.y = y
@@ -198,6 +197,7 @@ class Player:
         self.jumping = False  # check if player is in the air
         self.dir = 0
 
+
 class Mountain:
     global tile_size
 
@@ -207,6 +207,7 @@ class Mountain:
 
     def draw(self):
         screen.blit(mountains, (self.x, self.y))
+
 
 class World:
     def __init__(self, data):
@@ -230,16 +231,16 @@ class World:
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
                 if tile == 3:
-                    blob = Enemy(column_count * tile_size, row_count * tile_size)
-                    blob_group.add(blob)
+                    enemy = Enemy(column_count * tile_size, row_count * tile_size)
+                    enemy_group.add(enemy)
                 if tile == 4:
-                    weapon = Weapons(column_count*tile_size,row_count*tile_size)
+                    weapon = Weapons(column_count * tile_size, row_count * tile_size)
                     weapon_group.add(weapon)
                 if tile == 6:
                     lava = Danger(column_count * tile_size, row_count * tile_size + int((tile_size / 2)))
                     lava_group.add(lava)
                 if tile == 7:
-                    platform = Platform(column_count * tile_size, row_count * tile_size + int((tile_size / 2)),0,1)
+                    platform = Platform(column_count * tile_size, row_count * tile_size + int((tile_size / 2)), 0, 1)
                     platform_group.add(platform)
                 if tile == 8:
                     door = Door(column_count * tile_size, row_count * tile_size)
@@ -257,7 +258,7 @@ class World:
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('assets/blob.png')
+        self.image = pygame.image.load('assets/enemy.png')
         self.image = pygame.transform.scale(self.image, (51, 47))
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -268,16 +269,16 @@ class Enemy(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += self.dir
         self.counter += 1
-        #pygame.draw.rect(screen, WHITE, self.rect, 2) 
+        # pygame.draw.rect(screen, WHITE, self.rect, 2)
         if abs(self.counter) > 50:
             # checks for absolute value, so even if the counter is negative it will return a positive value
             self.dir *= -1  # turn left when counter is above 50
             self.counter *= -1  # reset the counter
             self.image = pygame.transform.flip(self.image, True, False)
-        
+
 
 class Platform(pygame.sprite.Sprite):
-    def __init__(self,x,y,moveright,moveleft):
+    def __init__(self, x, y, moveright, moveleft):
         pygame.sprite.Sprite.__init__(self)
         image = pygame.image.load('assets/platform.png')
         self.image = pygame.transform.scale(image, (tile_size, tile_size // 2))
@@ -288,17 +289,18 @@ class Platform(pygame.sprite.Sprite):
         self.count = 0
         self.mover = moveright
         self.movel = moveleft
+
     def update(self):
-        self.rect.x +=self.dir
+        self.rect.x += self.dir
         self.count += 1
         if abs(self.count) > 25:
             # checks for absolute value, so even if the counter is negative it will return a positive value
             self.dir *= -1  # turn left when counter is above 50
             self.count *= -1  # reset the counter
 
+
 class Danger(pygame.sprite.Sprite):
     def __init__(self, x, y):
-        
         pygame.sprite.Sprite.__init__(self)
         img = pygame.image.load('assets/lava.png')
         self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))
@@ -306,8 +308,9 @@ class Danger(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+
 class Door(pygame.sprite.Sprite):
-    def __init__(self,x,y):
+    def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         image = pygame.image.load('assets/door.png')
         self.image = pygame.transform.scale(image, (tile_size, tile_size))
@@ -315,27 +318,34 @@ class Door(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+
 class Weapons(pygame.sprite.Sprite):
-    def __init__(self, x,y):
+    def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         image = pygame.image.load('assets/gun.png')
-        self.image = pygame.transform.scale(image, (tile_size , tile_size))
+        self.image = pygame.transform.scale(image, (tile_size, tile_size))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
 
+
 class Bullet():
-    def __init__(self,x,y):
+    def __init__(self, x, y):
         self.image = pygame.image.load('assets/bulletimg.png')
         self.image = pygame.transform.rotate(self.image, 90)
         self.rect = self.image.get_rect()
-        self.rect.center = (x,y)
+        self.rect.center = (x, y)
         self.rect.x = x
         self.rect.y = y
+        self.height = self.image.get_height()
+        self.width = self.image.get_width()
+
+
     def draw(self):
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
-blob_group = pygame.sprite.Group()
+
+enemy_group = pygame.sprite.Group()
 lava_group = pygame.sprite.Group()
 platform_group = pygame.sprite.Group()
 door_group = pygame.sprite.Group()

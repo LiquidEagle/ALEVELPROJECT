@@ -51,11 +51,11 @@ screen_height = 1000
 screen = pygame.display.set_mode([mountainWidth, mountainHeight])
 pygame.display.set_caption("Platformer Game")
 
-#blob attributes
-
+#enemy attributes
+enemy_health = 10
 
 #player attributes
-ply = screen_width - 250
+ply = screen_width - 100
 px = 100
 vel_x = 0
 vel_y = 0
