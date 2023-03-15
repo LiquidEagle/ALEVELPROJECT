@@ -3,7 +3,6 @@ from config import *  # this contains all the global level variables across the 
 from classes import *  # this imports the two classes from the classes.py
 import databaseActions  # all database actions are here
 
-
 # 700, 398
 # main Pygame drawing loop function
 def pygame_start():
@@ -13,7 +12,6 @@ def pygame_start():
     # set variable locations
     mountain = Mountain(0, 0)
     user = Player(px, ply)
-    #world = World(world_data)
     restart = Buttons(screen_width // 2 - 60, screen_height // 2, restart_img)
 
     def draw_grid():

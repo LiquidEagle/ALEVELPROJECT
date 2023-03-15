@@ -1,5 +1,15 @@
 # All Database stuff goes in here!!
 import sqlite3
+import hashlib
+
+# test_input = input("What is the password: ")
+# test_hashed = hashlib.sha256(test_input.encode('utf-8')).hexdigest()
+# test_string = 'hello'
+# hashed = hashlib.sha256(test_string.encode('utf-8')).hexdigest()
+# if test_hashed == hashed:
+#   print("Correct!!!!!!!")
+# else:
+#     print("nah")
 #from cryptography.fernet import Fernet
 
 # key = Fernet.generate_key()
@@ -33,7 +43,8 @@ PRIMARY KEY(id AUTOINCREMENT))
 def register():
     username = input("Create Username: ")
     password = input("Create Password: ")
-    sql = 'INSERT INTO Logins (username,password) VALUES ("' + username + '","' + password + '");'
+    hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    sql = 'INSERT INTO Logins (username,password) VALUES ("' + username + '","' + hashed_password + '");'
     print(sql)
     cursor.execute(sql)
     con.commit()
@@ -42,7 +53,8 @@ def register():
 def login():
     username_login = input("Username: ")
     password_login = input("Password: ")
-    statement = "SELECT * FROM Logins WHERE username = '" + username_login + "' AND password = '" + password_login + "'"
+    password_hashed = hashlib.sha256(password_login.encode('utf-8')).hexdigest()
+    statement = "SELECT * FROM Logins WHERE username = '" + username_login + "' AND password = '" + password_hashed + "'"
     cursor.execute(statement)
     if not cursor.fetchone():
         print("Login failed")

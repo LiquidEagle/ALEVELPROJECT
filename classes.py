@@ -74,19 +74,16 @@ class Player:
                 self.isJump = False
             if keys_pressed[pygame.K_LEFT]:
                 dx -= 5
-                self.count += 1
                 self.move_left = True
                 self.move_right = False
             if keys_pressed[pygame.K_RIGHT]:
                 dx += 5
-                self.count += 1
                 self.move_left = False
                 self.move_right = True
             if keys_pressed[pygame.K_LEFT] == False and keys_pressed[pygame.K_RIGHT] == False:
                 self.move_left = False
                 self.move_right = False
                 self.stepIndex = 0
-                self.counter = 0
 
             self.vel_y += 1
             if self.vel_y > 10:
