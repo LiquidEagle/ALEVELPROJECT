@@ -14,6 +14,7 @@ def pygame_start():
     user = Player(px, ply)
     restart = Buttons(screen_width // 2 - 60, screen_height // 2, restart_img)
 
+
     def draw_grid():
         for line in range(0, 20):
             pygame.draw.line(screen, WHITE, (0, line * tile_size), (screen_width, line * tile_size))
@@ -39,6 +40,8 @@ def pygame_start():
             enemy_group.update()
             user.draw_game()
             platform_group.update()
+        if game_over ==1:
+            screen.blit(won_img, (screen_width // 2, screen_height // 2))
         # for bul in mainbullets:
         #     if bul.rect.y - 6 < blob_group.rect.y + blob_group.height and bul.rect.y + 6 > blob_group.rect.y:  # Checks x coords
         #         if bul.rect.x + 6 > blob_group.rect.x and bul.x - 6 < blob_group.rect.x + blob_group.width: # Checks y coords
@@ -72,6 +75,9 @@ def pygame_start():
         if game_over == -1:
             if restart.draw():
                 user.has_reset(px, ply) # if player dead draw the buttons
+                weapon_group.empty()
+                weapon_picked =0
+                weapon_group.draw(screen)
                 game_over = 0
         
         for bul in mainbullets:
