@@ -101,7 +101,7 @@ if options == "A":
 elif options == "C":
     databaseActions.createDBandTable()  # createDBandTable  is in databaseActions.py
 elif options == "B":
-    while databaseActions.login() == False:  # createDBandTable function is in databaseActions.py
+    while databaseActions.login() == False:  # login function is in databaseActions.py
         print("Please try again")
     pygame_start()
 

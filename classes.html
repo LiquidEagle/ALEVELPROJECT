@@ -1,0 +1,79 @@
+<html>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+      <div class="mermaid">
+    
+        classDiagram
+          class Bullet {
+            height
+            image
+            rect
+            width
+            draw()
+          }
+          class Buttons {
+            has_clicked : bool
+            image
+            rect
+            draw()
+          }
+          class Danger {
+            image
+            rect
+          }
+          class Door {
+            image
+            rect
+          }
+          class Enemy {
+            counter : int
+            dir : int
+            image
+            rect
+            update()
+          }
+          class Mountain {
+            x
+            y
+            draw()
+          }
+          class Platform {
+            count : int
+            dir : int
+            image
+            movel
+            mover
+            rect
+            update()
+          }
+          class Player {
+            count : int
+            dir : int
+            height
+            imageL : NoneType
+            imageR : NoneType
+            isJump : bool
+            jumping : bool
+            move_left : bool
+            move_right : bool
+            rect
+            stepIndex : int
+            vel_y : int
+            width
+            draw_game()
+            has_reset(x, y)
+            jump()*
+            update_player(game_over)
+          }
+          class Weapons {
+            image
+            rect
+          }
+          class World {
+            tile_list : list
+            draw()
+          }
+  
+       </div>
+  </body>
+</html>
