@@ -86,8 +86,8 @@ class Player:
                 self.stepIndex = 0
 
             self.vel_y += 1
-            if self.vel_y > 1:
-                self.vel_y = 1
+            if self.vel_y > 10:
+                self.vel_y = 10
             dy += self.vel_y
 
             # collision detection
@@ -137,13 +137,13 @@ class Player:
 
             for platform in platform_group:
                 #makes player move with the platform
-                self.rect.x += platform.dir
                 # check for collision in x direction
                 if platform.rect.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                     dx = 0
                 # check for y collison (tile stored in 1 and image in 0)
                 if platform.rect.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
                     # check if below the platform and collide with the movement of the platform
+                    self.rect.x += platform.dir
                     if abs((self.rect.top + dy) - platform.rect.top) < 20:
                         dy = platform.rect.bottom - self.rect.top
                         self.vel_y = 0
