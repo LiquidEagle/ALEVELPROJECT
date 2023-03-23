@@ -86,8 +86,8 @@ class Player:
                 self.stepIndex = 0
 
             self.vel_y += 1
-            if self.vel_y > 10:
-                self.vel_y = 10
+            if self.vel_y > 1:
+                self.vel_y = 1
             dy += self.vel_y
 
             # collision detection
@@ -127,6 +127,10 @@ class Player:
                 print(picR)
             if weapon_picked == 1:
                 pygame.sprite.spritecollide(self, weapon_group, True)
+            # check for collision with door to end the game and say player has won.
+            if pygame.sprite.spritecollide(self, door_group, False):
+                game_over = 1
+                print("You have won the game!")
 
             self.rect.x += dx
             self.rect.y += dy
@@ -270,9 +274,10 @@ class Enemy(pygame.sprite.Sprite):
         self.counter += 1
         # pygame.draw.rect(screen, WHITE, self.rect, 2)
         if abs(self.counter) > 50:
-            # checks for absolute value, so even if the counter is negative it will return a positive value
-            self.dir *= -1  # turn left when counter is above 50
-            self.counter *= -1  # reset the counter
+            self.dir *= -1  # turn left when counter is above 50.
+            # ^ this is done by multiplying dir by -1, therefore if dir is -1 it will turn to +1 (-1 * -1 = 1)
+            self.counter *= -1
+            # ^ reset the counter by flipping the counter, so the enemy can move to the left of its origin.
             self.image = pygame.transform.flip(self.image, True, False)
 
 
@@ -293,9 +298,10 @@ class Platform(pygame.sprite.Sprite):
         self.rect.x += self.dir
         self.count += 1
         if abs(self.count) > 25:
-            # checks for absolute value, so even if the counter is negative it will return a positive value
-            self.dir *= -1  # turn left when counter is above 50
-            self.count *= -1  # reset the counter
+            self.dir *= -1  # turn left when counter is above 25
+            # ^ this is done by multiplying dir by -1, therefore if dir is -1 it will turn to +1 (-1 * -1 = 1)
+            self.count *= -1
+            # ^ reset the counter by flipping the counter, so the platform can move to the left of its origin.
 
 
 class Danger(pygame.sprite.Sprite):

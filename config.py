@@ -36,11 +36,13 @@ standing = pygame.image.load('assets/standing.png')
 
 mountains = pygame.image.load('assets/snow.png')
 mountains = pygame.transform.scale(mountains, (1000,1000))
-dirt_img = pygame.image.load('assets/dirt.png')
-grass_img = pygame.image.load('assets/grass.png')
+dirt_img = pygame.image.load('assets/dirt2.png')
+grass_img = pygame.image.load('assets/grass2.png')
 dead_img = pygame.image.load('assets/dead.png')
 restart_img = pygame.image.load('assets/restart.png')
 restart_img = pygame.transform.scale(restart_img, (120,50))
+won_img = pygame.image.load('assets/won.png')
+won_img = pygame.transform.scale(won_img, (120,200))
 
 mountainWidth = mountains.get_width()
 mountainHeight = mountains.get_height()
@@ -55,7 +57,7 @@ pygame.display.set_caption("Platformer Game")
 enemy_health = 10
 
 #player attributes
-ply = screen_width - 100
+ply = screen_width -800
 px = 100
 vel_x = 0
 vel_y = 0
@@ -77,19 +79,19 @@ world_data = [
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 1],
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1],
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 5, 0, 0, 0, 1],
-[1, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 1],
-[1, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6, 2, 0, 7, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 7, 0, 2, 1, 1, 1, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 [1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-[1, 0, 0, 2, 0, 7, 0, 7, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 0, 2, 2, 0, 7, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 1],
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 7, 0, 0, 1],
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1],
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 2, 2, 2, 2, 2, 1],
-[1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 2, 2, 1, 1, 1, 1, 1, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 1, 1],
+[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+[1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 2, 2, 2, 6, 6, 6, 1, 1],
 [1, 0, 0, 0, 0, 0, 2, 2, 2, 6, 6, 6, 1, 1, 1, 1, 1, 1, 1, 1],
 [1, 0, 0, 0, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 [1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
