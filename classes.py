@@ -84,8 +84,8 @@ class Player:
                 self.stepIndex = 0
             
             self.vel_y += 1
-            if self.vel_y > 20:
-                self.vel_y = 20
+            if self.vel_y > 15:
+                self.vel_y = 15
             dy += self.vel_y
             
             # check for collision with danger or enemies
@@ -134,7 +134,7 @@ class Player:
                         self.jumping = False
                     # if the player is jumping and there is a collision, set player's top to tile's bottom
                     elif dy < 0:
-                        self.rect.top = tile_rect.bottom
+                        self.rect.top = tile_rect.bottom + 10
                         self.vel_y = 0
                     
                     # set the change in y to 0 or less if there is a collision in y direction
@@ -168,28 +168,7 @@ class Player:
             if self.rect.y >= 250:
                 self.rect.y -= 5
 
-        return game_over  # cant make game_over simply 'global' as it must return value at the time of action
-
-    def jump(self):
-
-        # global isJump, jumpCount, JUMPHEIGHT
-        # #start jumping
-        # keys_pressed = pygame.key.get_pressed()
-        # if keys_pressed[pygame.K_SPACE]:
-        # 	isJump = True
-
-        # followed this section of the tutorial here
-        # https://www.techwithtim.net/tutorials/game-development-with-python/pygame-tutorial/jumping/
-        # its not very OOP but it works
-        # if isJump:
-        # 	if jumpCount >= JUMPHEIGHT * -1:
-        # 		self.rect.y -= (jumpCount * abs(jumpCount)) * 0.5
-        # 		jumpCount -= 1
-        # 	else: # This will execute if our jump is finished
-        # 		jumpCount = JUMPHEIGHT
-        # 		isJump = False
-        # 		#resetting the variables
-        pass
+        return game_over  # returns the value of game_over via the update_player function
 
     def has_reset(self, x, y):
         self.stepIndex = 0

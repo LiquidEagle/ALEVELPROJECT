@@ -69,10 +69,10 @@ health = 10
 
 #tile attributes
 tile_size = 50
-game_over = 0
 weapon_picked = 0
 
-
+#game attributes
+game_over = 0
 
 world_data = [
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
