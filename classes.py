@@ -2,29 +2,28 @@ import pygame
 from config import *
 
 
-class Buttons():
+class Button:
     def __init__(self, x, y, image):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.has_clicked = False
+        self.clicked = False
+
+    def is_mouse_over(self):
+        mouse_pos = pygame.mouse.get_pos()
+        return self.rect.collidepoint(mouse_pos)
+
+    def is_clicked(self):
+        if self.is_mouse_over() and pygame.mouse.get_pressed()[0]:
+            self.clicked = True
+        else:
+            self.clicked = False
+        
 
     def draw(self):
-        is_clicked = False
-        # get mouse pos
-        pos = pygame.mouse.get_pos()
-
-        # check if mouse is over button
-        if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and self.has_clicked == False:  # 0 = LMB
-                is_clicked = True
-                self.has_clicked = True
-
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.has_clicked = False
         screen.blit(self.image, self.rect)
-        return is_clicked
+        return self.clicked
 
 
 class Player:
@@ -47,7 +46,6 @@ class Player:
         else:
             screen.blit(standing, (self.rect.x, self.rect.y))
             is_standing = True
-            self.count = 0
 
         # create an outline around the player
         pygame.draw.rect(screen, WHITE, self.rect, 2)
@@ -84,31 +82,12 @@ class Player:
                 self.move_left = False
                 self.move_right = False
                 self.stepIndex = 0
-
+            
             self.vel_y += 1
-            if self.vel_y > 10:
-                self.vel_y = 10
+            if self.vel_y > 20:
+                self.vel_y = 20
             dy += self.vel_y
-
-            # collision detection
-
-            self.jumping = True
-            for tile in world.tile_list:
-                # check for collision in x direction
-                if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
-                    dx = 0
-                # check for y collison (tile stored in 1 and image in 0)
-                if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                    # check if below ground (jumping)
-                    if self.vel_y < 0:
-                        dy = tile[1].bottom - self.rect.top
-                        self.vel_y = 0
-                    # check if above the ground (falling)
-                    elif self.vel_y >= 0:
-                        dy = tile[1].top - self.rect.bottom
-                        self.vel_y = 0
-                        self.jumping = False
-
+            
             # check for collision with danger or enemies
             if pygame.sprite.spritecollide(self, enemy_group, False):
                 game_over = -1
@@ -131,12 +110,42 @@ class Player:
             if pygame.sprite.spritecollide(self, door_group, False):
                 game_over = 1
                 print("You have won the game!")
+            
+            # collision detection
+            self.jumping = True
+            for tile in world.tile_list: 
+                tile_rect = pygame.Rect(tile[1]) #(tile stored in 1 and image in 0)
+                # check collision in x direction
+                if tile_rect.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):  
+                    # if the player is moving right and there is a collision, set player's right to tile's left 
+                    if dx > 0:
+                        self.rect.right = tile_rect.left
+                    # if the player is moving left and there is a collision, set player's left to tile's right
+                    elif dx < 0:
+                        self.rect.left = tile_rect.right   
+                    dx = 0 # stop the player's movement in x direction
+                
+                # check collision in y direction
+                if tile_rect.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                    # if the player is falling and there is a collision, set player's bottom to tile's top
+                    if dy > 0:
+                        self.rect.bottom = tile_rect.top
+                        self.vel_y = 0
+                        self.jumping = False
+                    # if the player is jumping and there is a collision, set player's top to tile's bottom
+                    elif dy < 0:
+                        self.rect.top = tile_rect.bottom
+                        self.vel_y = 0
+                    
+                    # set the change in y to 0 or less if there is a collision in y direction
+                    dy = min(dy, 0)
+
+
 
             self.rect.x += dx
             self.rect.y += dy
 
             for platform in platform_group:
-                #makes player move with the platform
                 # check for collision in x direction
                 if platform.rect.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                     dx = 0
