@@ -12,7 +12,7 @@ def pygame_start():
     # set variable locations
     mountain = Mountain(0, 0)
     user = Player(px, ply)
-    restart = Buttons(screen_width // 2 - 60, screen_height // 2, restart_img)
+    restart = Button(screen_width // 2 - 60, screen_height // 2, restart_img)
 
 
     def draw_grid():
@@ -71,7 +71,8 @@ def pygame_start():
         weapon_group.draw(screen)
 
         game_over = user.update_player(game_over)
-
+         # Update the button state
+        restart.is_clicked()
         if game_over == -1:
             if restart.draw():
                 user.has_reset(px, ply) # if player dead draw the buttons

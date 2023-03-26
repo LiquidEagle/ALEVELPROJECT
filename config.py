@@ -29,7 +29,7 @@ for lpic in range(1,10):
     lpic += 1
 
 
-
+#load all images
 Rimg = pygame.image.load('assets/R1.png')
 Limg = pygame.image.load('assets/L1.png')
 standing = pygame.image.load('assets/standing.png')
