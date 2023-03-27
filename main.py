@@ -5,9 +5,8 @@ import databaseActions  # all database actions are here
 
 # 700, 398
 # main Pygame drawing loop function
-def pygame_start():
+def pygame_start(enemy_health, mainbullets, world, game_over):
     pygame.init()
-    global vel_y, game_over, world, mainbullets, weapon_picked, health, enemy_health
 
     # set variable locations
     mountain = Mountain(0, 0)
@@ -110,5 +109,5 @@ elif options == "C":
 elif options == "B":
     while databaseActions.login() == False:  # login function is in databaseActions.py
         print("Please try again")
-    pygame_start()
+    pygame_start(enemy_health, mainbullets, world, game_over)
 

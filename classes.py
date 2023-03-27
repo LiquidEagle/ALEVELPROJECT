@@ -30,11 +30,7 @@ class Player:
     def __init__(self, x, y):
         self.has_reset(x, y)
 
-    def draw_game(self):
-        global left, right, px, ply, vel_y, is_standing
-        # if self.count > 9:
-        #     self.count = 0
-        #     self.stepIndex +=1
+    def draw_game(self):      
         if self.stepIndex >= 9:
             self.stepIndex = 0
         if self.move_left:
@@ -45,13 +41,12 @@ class Player:
             self.stepIndex += 1
         else:
             screen.blit(standing, (self.rect.x, self.rect.y))
-            is_standing = True
 
         # create an outline around the player
         pygame.draw.rect(screen, WHITE, self.rect, 2)
 
     def update_player(self, game_over):
-        global standing, dead_img, weapon_picked, picR, picL, gun_playerR, gun_playerL
+        global weapon_picked, dead_img
         dy = 0
         dx = 0
 
@@ -91,19 +86,16 @@ class Player:
             # check for collision with danger or enemies
             if pygame.sprite.spritecollide(self, enemy_group, False):
                 game_over = -1
-                print("you hit the enemy")
-                print(game_over)
+                print("The enemy killed you...")
+                print("Game over...")
             if pygame.sprite.spritecollide(self, lava_group, False):
                 game_over = -1
-                print(game_over)
-            if pygame.sprite.spritecollide(self, platform_group, False):
-                print("collided with platform ! ! ! !")
+                print("You fell into the lava...")
+                print("Game over...")
             if pygame.sprite.spritecollide(self, weapon_group, False):
                 weapon_picked = 1
-                print("collided with weapon")
-                picR = gun_playerR
-                picL = gun_playerL
-                print(picR)
+                # picR = gun_playerR
+                # picL = gun_playerL
             if weapon_picked == 1:
                 pygame.sprite.spritecollide(self, weapon_group, True)
             # check for collision with door to end the game and say player has won.
@@ -146,21 +138,27 @@ class Player:
             self.rect.y += dy
 
             for platform in platform_group:
-                # check for collision in x direction
-                if platform.rect.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
-                    dx = 0
-                # check for y collison (tile stored in 1 and image in 0)
-                if platform.rect.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                    # check if below the platform and collide with the movement of the platform
-                    self.rect.x += platform.dir
-                    if abs((self.rect.top + dy) - platform.rect.top) < 20:
-                        dy = platform.rect.bottom - self.rect.top
-                        self.vel_y = 0
-                    # check if above the platform
-                    elif abs((self.rect.bottom + dy) - platform.rect.top) < 20:
-                        self.rect.bottom = platform.rect.top
-                        self.vel_y = 0
-                        self.jumping = False
+                if self.rect.colliderect(platform.rect):
+                    if dx > 0:  # Moving right; Hit the left side of the platform
+                        if abs(self.rect.right - platform.rect.left) < 20 and self.rect.bottom > platform.rect.top + 20:
+                            self.rect.right = platform.rect.left
+                            dx = 0
+                    elif dx < 0:  # Moving left; Hit the right side of the platform
+                        if abs(self.rect.left - platform.rect.right) < 20 and self.rect.bottom > platform.rect.top + 20:
+                            self.rect.left = platform.rect.right
+                            dx = 0
+                    if dy > 0:  # Falling down; Hit the top side of the platform
+                        if abs(self.rect.bottom - platform.rect.top) < 20:
+                            self.rect.bottom = platform.rect.top
+                            dy = 0
+                            self.jumping = False
+                            self.rect.x += platform.dir  # Move player with platform
+                    elif dy < 0:  # Jumping up; Hit the bottom side of the platform
+                        if abs(self.rect.top - platform.rect.bottom) < 20:
+                            self.rect.top = platform.rect.bottom
+                            dy = 0
+                            self.vel_y = 0
+
         elif game_over == -1:
             dead_img = pygame.transform.scale(dead_img, (tile_size, tile_size))
             screen.blit(dead_img, (self.rect.x + 5, self.rect.y))
@@ -189,7 +187,7 @@ class Player:
         self.dir = 0
 
 
-class Mountain:
+class Mountain():
     global tile_size
 
     def __init__(self, x, y):

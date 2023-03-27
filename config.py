@@ -59,12 +59,9 @@ enemy_health = 10
 #player attributes
 ply = screen_width -800
 px = 100
-vel_x = 0
-vel_y = 0
 mainbullets = []
 JUMPHEIGHT = 5
 jumpCount = JUMPHEIGHT
-is_standing = False
 health = 10
 
 #tile attributes
